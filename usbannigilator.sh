@@ -1,6 +1,6 @@
 #!/bin/bash
 SSHUSER='TYPEUSER'
-if [ "$V" == 'TYPEUSER' ]
+if [ "$SSHUSER" == 'TYPEUSER' ]
   then echo "Замените SSHUSER в конфиг файле"
   exit
 fi
