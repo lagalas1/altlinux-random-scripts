@@ -1,6 +1,7 @@
 #!/bin/bash
 IFS=$'\n'
 GROUPNAME='GROUPNAME'
+IP='TYPEIP'
 desktop_directory() {
     if [[ -d "$HOME"/Desktop ]]; then
         DESKTOPDIRECTORY="$HOME"/Desktop
@@ -13,9 +14,11 @@ desktop_directory() {
 }
 
 checkers() {
-    if [[ "$GROUPNAME" == 'GROUPNAME']]; then
-    echo "Замените переменную GROUPNAME в файле"
-    exit 1
+    if [[ "$GROUPNAME" == 'GROUPNAME' ]]; then
+        read -p "группа для проверки: " GROUPNAME
+    fi
+    if [[ "$IP" == 'TYPEIP' ]]; then
+        read -p "IP адрес сервера: " IP
     fi
     if ! groups "$USER" | grep "$GROUPNAME" &>/dev/null; then
         echo "$USER" not in "$GROUPNAME" group
@@ -27,9 +30,9 @@ checkers() {
 
     if [[ -n "$FILES" ]]; then
         for FILE in $FILES; do
-            if grep 'URL\[$e\]=smb://ЗАМЕНИТЬIP/t' "$FILE" &>/dev/null; then
+            if grep "URL\[\$e\]=smb://$IP/t" "$FILE" &>/dev/null; then
                 bZDETECTED=true
-            elif grep 'URL\[$e\]=smb://ЗАМЕНИТЬIP/SCAN' "$FILE" &>/dev/null; then
+            elif grep "URL\[\$e\]=smb://$IP/SCAN" "$FILE" &>/dev/null; then
                 bSCANDETECTED=true
             fi
         done
@@ -44,24 +47,24 @@ main() {
         echo "Z already created"
     else
         touch "$DESKTOPDIRECTORY"/Z.desktop
-        echo '[Desktop Entry]
+        echo "[Desktop Entry]
 Icon=inode-directory
 Name[ru_RU]=Z
 Name=Z
 Type=Link
-URL[$e]=smb://ЗАМЕНИТЬIP/t' >"$DESKTOPDIRECTORY"/Z.desktop
+URL[\$e]=smb://$IP/t" >"$DESKTOPDIRECTORY"/Z.desktop
     fi
 
     if [[ "$bSCANDETECTED" == "true" ]]; then
         echo "Scan already created"
     else
         touch "$DESKTOPDIRECTORY"/"scan linux.desktop"
-        echo '[Desktop Entry]
+        echo "[Desktop Entry]
 Icon=inode-directory
 Name[ru_RU]=scan linux
 Name=scan linux
 Type=Link
-URL[$e]=smb://ЗАМЕНИТЬIP/SCAN' >"$DESKTOPDIRECTORY"/"scan linux.desktop"
+URL[\$e]=smb://$IP/SCAN" >"$DESKTOPDIRECTORY"/"scan linux.desktop"
     fi
 }
 

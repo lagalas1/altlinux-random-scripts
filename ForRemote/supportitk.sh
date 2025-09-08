@@ -2,13 +2,11 @@
 NEWUSER='TYPEUSER'
 NEWUSERPASS='TYPEPASS'
 checkers() {
-    if [[ NEWUSER == 'TYPEUSER' ]]; then
-        echo "Замените NEWUSER в конфиге"
-        exit 1
+    if [[ "$NEWUSER" == 'TYPEUSER' ]]; then
+        read -p "новый пользователь: " NEWUSER
     fi
-    if [[ NEWUSERPASS == 'TYPEPASS' ]]; then
-        echo "Замените NEWUSER в конфиге"
-        exit 1
+    if [[ "$NEWUSERPASS" == 'TYPEPASS' ]]; then
+        read -p "пароль нового пользователя захэшированный через openssl passwd -6 "12345": " NEWUSERPASS
     fi
     if [ "$EUID" -ne 0 ]; then
         echo "Запуск от root"
