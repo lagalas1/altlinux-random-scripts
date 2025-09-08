@@ -1,0 +1,11 @@
+[Unit]
+Description=Clean libre lock files after system reboot
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/lockcleaner.sh
+Type=simple
+Restart=no
+
+[Install]
+WantedBy=default.target
